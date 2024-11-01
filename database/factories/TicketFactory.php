@@ -20,7 +20,7 @@ class TicketFactory extends Factory
     {
         return [
             'user_id' => fake()->numberBetween(1, 5),
-            'title' => fake()->title(),
+            'title' => fake()->sentence(),
             'description' => fake()->paragraph(),
         ];
     }

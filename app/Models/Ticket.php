@@ -11,7 +11,7 @@ class Ticket extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['title', 'priority', 'status', 'description', 'user_id'];
+    protected $fillable = ['title', 'priority', 'status', 'description', 'user_id', 'agent_id'];
 
     protected $casts = [
         'priority' => TicketPriority::class,

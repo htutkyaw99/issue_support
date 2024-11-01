@@ -16,26 +16,30 @@ class TicketController extends Controller
     {
         $tickets = Ticket::latest()->paginate(10);
 
-        return view('issue.tickets', compact('tickets'));
+        return view('issue.tickets.tickets', compact('tickets'));
     }
 
     public function show($id)
     {
+        $status = TicketStatus::values();
+        $agents = User::whereIn('role', ['agent', 'admin'])->get();
         $ticket = Ticket::findOrFail($id);
 
         return view(
-            'issue.ticket-detail',
+            'issue.tickets.ticket-detail',
             [
                 'ticket' => $ticket,
+                'status' => $status,
+                'agents' => $agents
             ]
         );
     }
 
     public function create()
     {
-        $priority = TicketPriority::cases();
+        $priority = TicketPriority::values();
 
-        return view('issue.create-ticket', compact('priority'));
+        return view('issue.tickets.create-ticket', compact('priority'));
     }
 
     public function store(Request $request)
@@ -53,23 +57,25 @@ class TicketController extends Controller
             'user_id' => Auth::id()
         ]);
 
-        return redirect('/tickets')->with('status', 'Ticket created sucessfully!');
+        return redirect()->route('tickets.index')->with('status', 'Ticket created sucessfully!');
     }
 
-    public function assign($id)
+    public function update(Request $request, $id)
     {
-        $ticket = Ticket::findOrFail($id);
-        $ticket->agent_id = Auth::id();
-        $ticket->status = TicketStatus::IN_PROGRESS->value;
-        $ticket->save();
-        return back();
-    }
+        $validated = $request->validate([
+            'agent_id' => 'required',
+            'status' => 'required',
+        ]);
 
-    public function resolve($id)
-    {
         $ticket = Ticket::findOrFail($id);
-        $ticket->status = TicketStatus::RESOLVED->value;
-        $ticket->save();
-        return back();
+
+        $data = [
+            'agent_id' => (int)$request->agent_id,
+            'status' => $request->status
+        ];
+
+        $ticket->update($data);
+
+        return redirect()->back()->with('status', 'Ticket updated successfully!');
     }
 }

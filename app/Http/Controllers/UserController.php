@@ -14,13 +14,13 @@ class UserController extends Controller
     {
         $users = User::orderBy('role')->paginate(10);
 
-        return view('issue.users', compact('users'));
+        return view('issue.admin.users', compact('users'));
     }
 
-    public function show()
+    public function create()
     {
         $roles = UserRole::cases();
-        return view('issue.create-user', compact('roles'));
+        return view('issue.admin.create-user', compact('roles'));
     }
 
     public function store(Request $request)
@@ -42,7 +42,7 @@ class UserController extends Controller
             'role' => $request->role
         ]);
 
-        return redirect('/users')->with('status', 'User created successfully!');
+        return redirect()->route('admin.users.index')->with('status', 'User created successfully!');
     }
 
     public function edit($id)
@@ -51,7 +51,7 @@ class UserController extends Controller
         $user = User::findOrFail($id);
         $roles = UserRole::cases();
         return view(
-            'issue.edit-user',
+            'issue.admin.edit-user',
             [
                 'roles' => $roles,
                 'user' => $user
@@ -84,6 +84,6 @@ class UserController extends Controller
 
         $user->update($data);
 
-        return redirect('/users')->with('status', 'User updated successfully!');
+        return redirect()->route('admin.users.index')->with('status', 'User updated successfully!');
     }
 }
