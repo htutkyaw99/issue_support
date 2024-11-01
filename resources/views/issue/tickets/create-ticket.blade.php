@@ -1,4 +1,4 @@
-@extends('issue.master')
+@extends('issue.admin.master')
 
 @section('content')
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">

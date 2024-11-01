@@ -10,15 +10,15 @@ Route::get('/', function () {
 });
 
 require __DIR__ . '/auth.php';
-
-Route::get('/dashboard', [IssueController::class, 'index'])->name('dashboard');
-
-
 // User
 
 // Agent
 
 // Admin
+Route::get('/admin/dashboard', function () {
+    return view('issue.admin.dashboard');
+})->name('admin.dashboard');
+
 // Tickets Management ( Admin | Agent )
 Route::prefix('/tickets')->middleware(['auth'])->group(function () {
     Route::get('/', [TicketController::class, 'index'])->name('tickets.index');
@@ -35,30 +35,3 @@ Route::prefix('/admin/users')->middleware(['auth'])->group(function () {
     Route::get('{id}/edit', [UserController::class, 'edit'])->name('admin.users.edit');
     Route::put('{id}/edit', [UserController::class, 'update'])->name('admin.users.update');
 });
-
-
-// Route::prefix('tickets')->middleware(['auth'])->group(function () {
-//     Route::get('', [TicketController::class, 'index']);
-
-//     Route::get('/create', [TicketController::class, 'create']);
-
-//     Route::post('/create', [TicketController::class, 'store']);
-
-//     Route::get('/{id}', [TicketController::class, 'show']);
-
-//     Route::post('/{id}/assign', [TicketController::class, 'assign']);
-
-//     Route::post('/{id}/resolve', [TicketController::class, 'resolve']);
-// });
-
-// Route::prefix('users')->middleware(['auth'])->group(function () {
-//     Route::get('', [UserController::class, 'index']);
-
-//     Route::get('/create', [UserController::class, 'show'])->middleware('auth');
-
-//     Route::post('/create', [UserController::class, 'store'])->middleware('auth');
-
-//     Route::get('/{id}/edit', [UserController::class, 'edit'])->middleware('auth');
-
-//     Route::post('/{id}/edit', [UserController::class, 'update'])->middleware('auth');
-// });

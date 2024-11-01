@@ -1,4 +1,4 @@
-@extends('issue.master')
+@extends('issue.admin.master')
 
 @section('content')
     @if (session('status'))

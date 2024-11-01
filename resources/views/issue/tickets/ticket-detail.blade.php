@@ -1,4 +1,4 @@
-@extends('issue.master')
+@extends('issue.admin.master')
 
 @section('content')
     {{-- @dd($ticket->toArray()) --}}
@@ -46,13 +46,10 @@
                 </div>
                 <hr class="h-px mt-3 mb-3 bg-gray-200 border-0 dark:bg-gray-700">
                 <form action="{{ route('tickets.update', ['id' => $ticket->id]) }}" method="POST"
-                    class="flex flex-col items-end space-y-3">
+                    class="flex items-center justify-end gap-3">
                     @csrf
                     @method('PUT')
                     <div>
-                        <label for="agent"
-                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white text-end">Assigned
-                            User</label>
                         <select id="agent" name="agent_id"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                             @foreach ($agents as $agent)
@@ -64,9 +61,6 @@
                     </div>
 
                     <div>
-                        <label for="status"
-                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white text-end">Status
-                        </label>
                         <select id="status" name="status"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                             @foreach ($status as $item)
@@ -78,7 +72,7 @@
                     </div>
 
                     <button type="submit"
-                        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Submit</button>
+                        class="text-white mt-auto bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2  dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Submit</button>
                 </form>
             </div>
 
@@ -89,7 +83,7 @@
                             class="flex items-center justify-between w-full p-5 font-medium rtl:text-right text-gray-500 border border-b-0 border-gray-200 rounded-xl focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-800 dark:border-gray-700 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 gap-3"
                             data-accordion-target="#accordion-collapse-body-1" aria-expanded="true"
                             aria-controls="accordion-collapse-body-1">
-                            <span>Comment Section</span>
+                            <span>Disscusion Section</span>
                             <svg data-accordion-icon class="w-3 h-3 rotate-180 shrink-0" aria-hidden="true"
                                 xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

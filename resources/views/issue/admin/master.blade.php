@@ -14,11 +14,11 @@
 
 <body class="dark:bg-gray-900">
     <nav>
-        @include('issue.components.nav')
+        @include('issue.admin.components.nav')
     </nav>
     {{-- <div class="antialiased bg-gray-50 dark:bg-gray-900"> --}}
     <aside>
-        @include('issue.components.aside')
+        @include('issue.admin.components.aside')
     </aside>
 
     <div class="p-4 sm:ml-64 mt-14">
