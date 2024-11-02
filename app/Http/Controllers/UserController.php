@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Ticket;
 use App\Enums\UserRole;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Enum;
 
@@ -15,6 +17,17 @@ class UserController extends Controller
         $users = User::orderBy('role')->paginate(10);
 
         return view('issue.admin.users', compact('users'));
+    }
+
+    public function show()
+    {
+        $tickets = Ticket::where('agent_id', Auth::id())->paginate(10);
+
+        if (auth()->user()->role->value == 'user') {
+            return view('issue.user.dashboard', compact('tickets'));
+        } else {
+            return view('issue.admin.dashboard', compact('tickets'));
+        }
     }
 
     public function create()
