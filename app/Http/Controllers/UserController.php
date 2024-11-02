@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Ticket;
 use App\Enums\UserRole;
 use Illuminate\Http\Request;
+use App\Enums\TicketPriority;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Enum;
@@ -22,12 +23,7 @@ class UserController extends Controller
     public function show()
     {
         $tickets = Ticket::where('agent_id', Auth::id())->paginate(10);
-
-        if (auth()->user()->role->value == 'user') {
-            return view('issue.user.dashboard', compact('tickets'));
-        } else {
-            return view('issue.admin.dashboard', compact('tickets'));
-        }
+        return view('issue.admin.dashboard', compact('tickets'));
     }
 
     public function create()

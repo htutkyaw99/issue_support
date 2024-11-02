@@ -1,9 +1,8 @@
-@extends('issue.admin.master')
+@extends('issue.user.master')
 
 @section('content')
-    {{-- @dd($ticket->toArray()) --}}
     <div class="relative overflow-x-auto">
-        <a href="/tickets"
+        <a href="{{ route('user.dashboard') }}"
             class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
             <svg class="w-6 h-6 text-gray-800 dark:text-white mr-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                 width="24" height="24" fill="none" viewBox="0 0 24 24">
@@ -45,38 +44,18 @@
                     <x-badge :input="$ticket->priority" />
                 </div>
                 <hr class="h-px mt-3 mb-3 bg-gray-200 border-0 dark:bg-gray-700">
-                <form action="{{ route('tickets.update', ['id' => $ticket->id]) }}" method="POST"
+                <form action="{{ route('user.tickets.close', ['id' => $ticket->id]) }}" method="POST"
                     class="flex items-center justify-end gap-3">
                     @csrf
                     @method('PUT')
-                    <div>
-                        <select id="agent" name="agent_id"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                            @foreach ($agents as $agent)
-                                <option {{ $ticket->agent_id == $agent->id ? 'selected' : '' }} value="{{ $agent->id }}">
-                                    {{ $agent->name }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-
-                    <div>
-                        <select id="status" name="status"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                            @foreach ($status as $item)
-                                <option {{ $ticket->status->value === $item ? 'selected' : '' }}
-                                    value="{{ $item }}">
-                                    {{ $item }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-
-                    <button type="submit"
-                        class="text-white mt-auto bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2  dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Submit</button>
+                    @isset($ticket->agent_id)
+                        <button type="submit"
+                            class="text-white mt-auto bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2  dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Close</button>
+                    @endisset
                 </form>
             </div>
 
-            {{-- comment add later --}}
+            {{-- comment . will add later --}}
             {{-- <div class="block p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
                 <div id="accordion-collapse" data-accordion="collapse">
                     <h2 id="accordion-collapse-heading-1">

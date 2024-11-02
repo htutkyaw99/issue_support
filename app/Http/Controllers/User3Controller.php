@@ -4,19 +4,26 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Ticket;
+use App\Enums\TicketStatus;
 use Illuminate\Http\Request;
 use App\Enums\TicketPriority;
-use App\Enums\TicketStatus;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rules\Enum;
 
-class TicketController extends Controller
+class User3Controller extends Controller
 {
     public function index()
     {
-        $tickets = Ticket::latest()->paginate(10);
+        $tickets = Ticket::where('user_id', Auth::id())->paginate(10);
+        $priority = TicketPriority::values();
 
-        return view('issue.tickets.tickets', compact('tickets'));
+        return view(
+            'issue.user.dashboard',
+            [
+                'priority' => $priority,
+                'tickets' => $tickets
+            ]
+        );
     }
 
     public function show($id)
@@ -25,22 +32,17 @@ class TicketController extends Controller
 
         $status = TicketStatus::values();
         $agents = User::whereIn('role', ['agent', 'admin'])->get();
+        $priority = TicketPriority::values();
 
         return view(
-            'issue.tickets.ticket-detail',
+            'issue.user.tickets',
             [
                 'ticket' => $ticket,
                 'status' => $status,
-                'agents' => $agents
+                'agents' => $agents,
+                'priority' => $priority
             ]
         );
-    }
-
-    public function create()
-    {
-        $priority = TicketPriority::values();
-
-        return view('issue.tickets.create-ticket', compact('priority'));
     }
 
     public function store(Request $request)
@@ -59,25 +61,22 @@ class TicketController extends Controller
             'user_id' => Auth::id()
         ]);
 
-        return redirect()->route('tickets.index')->with('status', 'Ticket created sucessfully!');
+        return back();
     }
 
-    public function update(Request $request, $id)
+    public function close($id)
     {
-        $validated = $request->validate([
-            'agent_id' => 'required',
-            'status' => 'required',
-        ]);
-
         $ticket = Ticket::findOrFail($id);
+        if (Auth::user()->id == $ticket->user->id) {
+            $ticket->update(
+                [
+                    'status' => 'closed'
+                ]
+            );
 
-        $data = [
-            'agent_id' => (int)$request->agent_id,
-            'status' => $request->status
-        ];
-
-        $ticket->update($data);
-
-        return redirect()->back()->with('status', 'Ticket updated successfully!');
+            return back();
+        } else {
+            abort(403);
+        }
     }
 }
