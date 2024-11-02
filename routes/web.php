@@ -28,7 +28,7 @@ Route::prefix('/tickets')->middleware(['auth', 'isAdmin:admin'])->group(function
     Route::put('/{id}/edit', [TicketController::class, 'update'])->name('tickets.update');
 });
 // User Management ( Admin )
-Route::prefix('/admin/users')->group(function () {
+Route::prefix('/admin/users')->middleware(['auth', 'isAdmin:admin'])->group(function () {
     Route::get('', [UserController::class, 'index'])->name('admin.users.index');
     Route::get('create', [UserController::class, 'create'])->name('admin.users.create');
     Route::post('create', [UserController::class, 'store'])->name('admin.users.store');
